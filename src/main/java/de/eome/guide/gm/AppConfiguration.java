@@ -2,7 +2,7 @@ package de.eome.guide.gm;
 
 import de.eome.guide.gm.model.Tool;
 import de.eome.guide.gm.model.VRMethod;
-import de.glassroom.gpe.utils.XMLUtils;
+import de.eome.guide.gm.util.XMLUtils;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
