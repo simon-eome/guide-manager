@@ -1,0 +1,776 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.media.MediaView?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="800.0" prefWidth="960.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <VBox BorderPane.alignment="CENTER">
+        <children>
+          <MenuBar VBox.vgrow="NEVER">
+            <menus>
+              <Menu mnemonicParsing="false" text="Datei">
+                <items>
+                        <MenuItem mnemonicParsing="false" onAction="#createNewGuide" text="Neue Anleitung erstellen">
+                           <graphic>
+                              <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/lc_dbnewform.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </MenuItem>
+                        <MenuItem mnemonicParsing="false" onAction="#selectGuide" text="Anleitung öffnen...">
+                           <graphic>
+                              <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/lc_open.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </MenuItem>
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#showSynchronizeWindow" text="Synchronisieren...">
+                           <graphic>
+                              <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/lc_refresh.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></MenuItem>
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#showSettingsWindow" text="Einstellungen..." />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#closeApplication" text="Beenden">
+                           <graphic>
+                              <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/system-log-out.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></MenuItem>
+                </items>
+              </Menu>
+                  <Menu mnemonicParsing="false" text="Bearbeiten">
+                    <items>
+                      <MenuItem fx:id="undoMenuItem" mnemonicParsing="false" onAction="#undo" text="Rückgängig">
+                           <accelerator>
+                              <KeyCodeCombination alt="UP" code="Z" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                           </accelerator>
+                           <graphic>
+                              <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/lc_undo.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></MenuItem>
+                    </items>
+                  </Menu>
+            </menus>
+          </MenuBar>
+            <BorderPane>
+               <center>
+                  <VBox BorderPane.alignment="CENTER">
+                     <children>
+                        <BorderPane fx:id="headerChapterInfo" layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="200.0">
+                           <left>
+                              <Label prefWidth="100.0" text="Kapitel von:" textAlignment="RIGHT" BorderPane.alignment="CENTER" />
+                           </left>
+                           <center>
+                              <FlowPane alignment="CENTER_LEFT" hgap="5.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Label fx:id="parentGuideTitle" text="[Titel der übergeordneten Anleitung]" />
+                                    <Button mnemonicParsing="false" onAction="#returnToParentGuide">
+                                       <graphic>
+                                          <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../icons/lc_arrowshapes.striped-left-arrow.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                       <tooltip>
+                                          <Tooltip text="Zur übergeordneten Anleitung zurück kehren." />
+                                       </tooltip>
+                                    </Button>
+                                 </children>
+                              </FlowPane>
+                           </center>
+                        </BorderPane>
+                        <BorderPane prefWidth="200.0">
+                           <left>
+                              <Label prefWidth="100.0" text="Titel:" textAlignment="RIGHT" BorderPane.alignment="CENTER" />
+                           </left>
+                           <center>
+                              <Label fx:id="guideTitle" text="-" BorderPane.alignment="CENTER_LEFT" />
+                           </center>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </BorderPane>
+                        <BorderPane prefWidth="200.0">
+                           <left>
+                              <Label prefWidth="100.0" text="Beschreibung:" BorderPane.alignment="CENTER">
+                                 <BorderPane.margin>
+                                    <Insets top="5.0" />
+                                 </BorderPane.margin></Label>
+                           </left>
+                           <center>
+                              <Label fx:id="guideDescription" text="-" wrapText="true" BorderPane.alignment="CENTER_LEFT" />
+                           </center>
+                        </BorderPane>
+                        <BorderPane fx:id="vrSceneInfoPane" layoutX="10.0" layoutY="70.0" prefWidth="200.0">
+                           <left>
+                              <Label prefWidth="100.0" text="VR-Szene" BorderPane.alignment="CENTER" />
+                           </left>
+                           <center>
+                              <Label fx:id="vrSceneLabel" text="-" wrapText="true" BorderPane.alignment="CENTER_LEFT" />
+                           </center>
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </BorderPane>
+                     </children>
+                  </VBox>
+               </center>
+               <right>
+                  <ToolBar orientation="VERTICAL" BorderPane.alignment="TOP_CENTER">
+                     <items>
+                        <Button fx:id="editGuideButton" mnemonicParsing="false" onAction="#showEditGuideWindow">
+                           <graphic>
+                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/lc_editdoc.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <tooltip>
+                              <Tooltip text="Titel und Beschreibung bearbeiten" />
+                           </tooltip>
+                        </Button>
+                        <Button fx:id="deleteGuideButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#deleteGuide">
+                           <graphic>
+                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/lc_delete.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <tooltip>
+                              <Tooltip text="Anleitung löschen" />
+                           </tooltip>
+                        </Button>
+                     </items>
+                     <BorderPane.margin>
+                        <Insets left="10.0" />
+                     </BorderPane.margin>
+                  </ToolBar>
+               </right>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+               <top>
+                  <Label text="Anleitung" BorderPane.alignment="CENTER_LEFT">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </top>
+            </BorderPane>
+        </children>
+      </VBox>
+   </top>
+   <center>
+      <SplitPane fx:id="body" dividerPositions="0.35" BorderPane.alignment="CENTER">
+         <items>
+            <BorderPane minWidth="320.0">
+               <top>
+                  <Label text="Schritte &amp; Kapitel" BorderPane.alignment="CENTER_LEFT">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <BorderPane.margin>
+                        <Insets bottom="5.0" />
+                     </BorderPane.margin>
+                  </Label>
+               </top>
+               <center>
+                  <ListView fx:id="stepListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+               </center>
+               <right>
+                  <ToolBar orientation="VERTICAL" BorderPane.alignment="CENTER">
+                    <items>
+                        <Button fx:id="moveNodeUpButton" mnemonicParsing="false" onAction="#moveNodeUp" prefHeight="32.0" prefWidth="32.0">
+                           <graphic>
+                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/lc_arrowshapes.up-arrow.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <tooltip>
+                              <Tooltip text="Ausgewählten Eintrag nach oben schieben" />
+                           </tooltip>
+                        </Button>
+                      <Button fx:id="moveNodeDownButton" mnemonicParsing="false" onAction="#moveNodeDown">
+                           <graphic>
+                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/lc_arrowshapes.down-arrow.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <tooltip>
+                              <Tooltip text="Ausgewählten Eintrag nach unten schieben" />
+                           </tooltip>
+                        </Button>
+                        <Separator />
+                        <Button fx:id="deleteNodeButton" mnemonicParsing="false" onAction="#deleteNode">
+                           <graphic>
+                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/lc_deletepage.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <tooltip>
+                              <Tooltip text="Ausgewählte Einträge löschen" />
+                           </tooltip>
+                        </Button>
+                        <Button fx:id="combineStepsButton" mnemonicParsing="false" onAction="#combineSteps">
+                           <graphic>
+                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/lc_formatgroup.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <tooltip>
+                              <Tooltip text="Ausgewählte Einträge zu einem Kapitel zusammenfassen" />
+                           </tooltip>
+                        </Button>
+                        <Separator />
+                        <Button fx:id="mediaFolderButton" mnemonicParsing="false" onAction="#openContentFolder" prefWidth="40.0">
+                           <graphic>
+                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/lc_open.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <tooltip>
+                              <Tooltip text="Inhaltspaket im Dateibrowser anzeigen" />
+                           </tooltip>
+                        </Button>
+                    </items>
+                  </ToolBar>
+               </right>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               <bottom>
+                  <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                    <items>
+                        <Button mnemonicParsing="false" onAction="#createNewStep" text="Neuer Schritt">
+                           <graphic>
+                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/lc_insertpage.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#createNewChapter" text="Kapitel verlinken">
+                           <graphic>
+                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/lc_insertdoc.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                    </items>
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </ToolBar>
+               </bottom>
+            </BorderPane>
+            <BorderPane fx:id="nodeDetailsPane">
+               <center>
+                  <StackPane minWidth="550.0">
+                     <children>
+                        <BorderPane fx:id="chapterPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: -fx-background;">
+                           <StackPane.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </StackPane.margin>
+                           <center>
+                              <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <TitledPane animated="false" text="Verknüpfte Anleitung">
+                                       <content>
+                                          <BorderPane>
+                                             <right>
+                                                <ToolBar orientation="VERTICAL" BorderPane.alignment="CENTER">
+                                                  <items>
+                                                    <Button mnemonicParsing="false" onAction="#openChapter">
+                                                         <graphic>
+                                                            <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../icons/lc_arrowshapes.striped-right-arrow.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                      </Button>
+                                                      <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#editChapter">
+                                                         <graphic>
+                                                            <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@../icons/lc_editdoc.png" />
+                                                               </image>
+                                                            </ImageView>
+                                                         </graphic>
+                                                      </Button>
+                                                  </items>
+                                                </ToolBar>
+                                             </right>
+                                             <center>
+                                                <VBox BorderPane.alignment="CENTER">
+                                                   <children>
+                                                      <Label fx:id="chapterGuideTitle" text="n/a">
+                                                         <font>
+                                                            <Font size="16.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </VBox>
+                                             </center>
+                                          </BorderPane>
+                                       </content>
+                                    </TitledPane>
+                                 </children>
+                              </VBox>
+                           </center>
+                        </BorderPane>
+                        <BorderPane fx:id="stepPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: -fx-background;">
+                           <StackPane.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </StackPane.margin>
+                           <center>
+                              <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+                                <tabs>
+                                  <Tab text="Allgemein">
+                                    <content>
+                                          <VBox>
+                                             <children>
+                                                <TitledPane animated="false" text="Beschreibung">
+                                                  <content>
+                                                      <BorderPane>
+                                                         <right>
+                                                            <ToolBar orientation="VERTICAL" BorderPane.alignment="CENTER">
+                                                              <items>
+                                                                  <Button mnemonicParsing="false" onAction="#editStepInfo">
+                                                                     <graphic>
+                                                                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@../icons/lc_editdoc.png" />
+                                                                           </image>
+                                                                        </ImageView>
+                                                                     </graphic>
+                                                                     <tooltip>
+                                                                        <Tooltip text="Beschreibung bearbeiten" />
+                                                                     </tooltip>
+                                                                  </Button>
+                                                              </items>
+                                                            </ToolBar>
+                                                         </right>
+                                                         <center>
+                                                            <Label fx:id="stepInfo" text="[Beschreibung des Schrittes]" wrapText="true" BorderPane.alignment="CENTER_LEFT" />
+                                                         </center>
+                                                      </BorderPane>
+                                                  </content>
+                                                </TitledPane>
+                                                <TitledPane animated="false" text="Media">
+                                                  <content>
+                                                      <BorderPane>
+                                                         <right>
+                                                            <ToolBar orientation="VERTICAL" BorderPane.alignment="CENTER">
+                                                              <items>
+                                                                <Button mnemonicParsing="false" onAction="#mediaSelectImage" prefWidth="40.0">
+                                                                     <graphic>
+                                                                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@../icons/lc_graphicfilterposter.png" />
+                                                                           </image>
+                                                                        </ImageView>
+                                                                     </graphic>
+                                                                     <tooltip>
+                                                                        <Tooltip text="Bild als Medienobjekt hinterlegen" />
+                                                                     </tooltip>
+                                                                  </Button>
+                                                                  <Button mnemonicParsing="false" onAction="#mediaSelectVideo" prefWidth="40.0">
+                                                                     <graphic>
+                                                                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@../icons/lc_animationobjects.png" />
+                                                                           </image>
+                                                                        </ImageView>
+                                                                     </graphic>
+                                                                     <tooltip>
+                                                                        <Tooltip text="Video als Medienobjekt hinterlegen" />
+                                                                     </tooltip>
+                                                                  </Button>
+                                                                  <Button fx:id="mediaRemoveButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#mediaRemove" prefWidth="40.0">
+                                                                     <graphic>
+                                                                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@../icons/lc_delete.png" />
+                                                                           </image>
+                                                                        </ImageView>
+                                                                     </graphic>
+                                                                     <tooltip>
+                                                                        <Tooltip text="Medienobjekt löschen" />
+                                                                     </tooltip>
+                                                                  </Button>
+                                                                  <Separator />
+                                                                  <Button fx:id="mediaEditButton" layoutX="10.0" layoutY="131.0" mnemonicParsing="false" onAction="#editMediaObject" prefWidth="40.0">
+                                                                     <graphic>
+                                                                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@../icons/lc_editdoc.png" />
+                                                                           </image>
+                                                                        </ImageView>
+                                                                     </graphic>
+                                                                     <tooltip>
+                                                                        <Tooltip text="Medienobjekt bearbeiten" />
+                                                                     </tooltip>
+                                                                  </Button>
+                                                                  <Button fx:id="mediaRefreshButton" layoutX="10.0" layoutY="131.0" mnemonicParsing="false" onAction="#refreshMedia" prefWidth="40.0">
+                                                                     <graphic>
+                                                                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@../icons/lc_refresh.png" />
+                                                                           </image>
+                                                                        </ImageView>
+                                                                     </graphic>
+                                                                     <tooltip>
+                                                                        <Tooltip text="Medienobjekt bearbeiten" />
+                                                                     </tooltip>
+                                                                  </Button>
+                                                              </items>
+                                                            </ToolBar>
+                                                         </right>
+                                                         <center>
+                                                            <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                                               <children>
+                                                                  <AnchorPane fx:id="noMediaPane" layoutX="10.0" layoutY="10.0" prefHeight="50.0" style="-fx-background-color: #F5F5F5;">
+                                                                     <children>
+                                                                        <Label text="Derzeit ist kein Medienobjekt hinterlegt." />
+                                                                     </children>
+                                                                  </AnchorPane>
+                                                                  <AnchorPane fx:id="imageMediaPane" style="-fx-background-color: #F5F5F5;">
+                                                                     <children>
+                                                                        <ImageView fx:id="contentImageView" fitHeight="244.0" fitWidth="432.0" pickOnBounds="true" preserveRatio="true" />
+                                                                     </children>
+                                                                  </AnchorPane>
+                                                                  <AnchorPane fx:id="videoMediaPane" style="-fx-background-color: #F5F5F5;">
+                                                                     <children>
+                                                                        <Rectangle arcHeight="5.0" arcWidth="5.0" height="251.0" stroke="BLACK" strokeType="INSIDE" width="441.0" />
+                                                                        <MediaView fx:id="contentVideoView" fitHeight="244.0" fitWidth="432.0" />
+                                                                        <Button layoutX="327.0" layoutY="206.0" mnemonicParsing="false" onAction="#handleVideoPlay">
+                                                                           <graphic>
+                                                                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                                                 <image>
+                                                                                    <Image url="@../icons/media-playback-start.png" />
+                                                                                 </image>
+                                                                              </ImageView>
+                                                                           </graphic>
+                                                                           <tooltip>
+                                                                              <Tooltip text="Empty Tooltip" />
+                                                                           </tooltip>
+                                                                        </Button>
+                                                                        <Button layoutX="376.0" layoutY="206.0" mnemonicParsing="false" onAction="#handleVideoStop">
+                                                                           <graphic>
+                                                                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                                                 <image>
+                                                                                    <Image url="@../icons/media-playback-stop.png" />
+                                                                                 </image>
+                                                                              </ImageView>
+                                                                           </graphic>
+                                                                           <tooltip>
+                                                                              <Tooltip text="Video stoppen" />
+                                                                           </tooltip>
+                                                                        </Button>
+                                                                     </children>
+                                                                  </AnchorPane>
+                                                               </children>
+                                                            </StackPane>
+                                                         </center>
+                                                      </BorderPane>
+                                                  </content>
+                                                </TitledPane>
+                                                <TitledPane animated="false" text="Anforderungen">
+                                                  <content>
+                                                      <VBox>
+                                                         <children>
+                                                            <CheckBox fx:id="stepIsRoutine" mnemonicParsing="false" text="Es handelt sich um eine Routinetätigkeit." />
+                                                         </children>
+                                                      </VBox>
+                                                  </content>
+                                                </TitledPane>
+                                             </children>
+                                          </VBox>
+                                    </content>
+                                  </Tab>
+                                    <Tab text="Warnungen und Hinweise">
+                                      <content>
+                                          <VBox>
+                                             <children>
+                                                <TitledPane animated="false" text="Warnungen">
+                                                  <content>
+                                                      <BorderPane>
+                                                         <right>
+                                                            <ToolBar orientation="VERTICAL" BorderPane.alignment="CENTER">
+                                                              <items>
+                                                                <Button mnemonicParsing="false" onAction="#addWarning">
+                                                                     <graphic>
+                                                                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@../icons/lc_insertindexesentry.png" />
+                                                                           </image>
+                                                                        </ImageView>
+                                                                     </graphic>
+                                                                     <tooltip>
+                                                                        <Tooltip text="Neue Warnung hinzufügen" />
+                                                                     </tooltip>
+                                                                  </Button>
+                                                                  <Button fx:id="editWarningButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#editWarning">
+                                                                     <graphic>
+                                                                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@../icons/lc_editdoc.png" />
+                                                                           </image>
+                                                                        </ImageView>
+                                                                     </graphic>
+                                                                     <tooltip>
+                                                                        <Tooltip text="Warnung bearbeiten" />
+                                                                     </tooltip>
+                                                                  </Button>
+                                                                  <Button fx:id="removeWarningButton" layoutX="10.0" layoutY="48.0" mnemonicParsing="false" onAction="#removeWarning">
+                                                                     <graphic>
+                                                                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@../icons/lc_delete.png" />
+                                                                           </image>
+                                                                        </ImageView>
+                                                                     </graphic>
+                                                                     <tooltip>
+                                                                        <Tooltip text="Warnung löschen" />
+                                                                     </tooltip>
+                                                                  </Button>
+                                                              </items>
+                                                            </ToolBar>
+                                                         </right>
+                                                         <center>
+                                                            <ListView fx:id="warningsListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                                                         </center>
+                                                      </BorderPane>
+                                                  </content>
+                                                </TitledPane>
+                                                <TitledPane animated="false" layoutX="10.0" layoutY="10.0" text="Hinweise">
+                                                   <content>
+                                                      <BorderPane>
+                                                         <right>
+                                                            <ToolBar orientation="VERTICAL" BorderPane.alignment="CENTER">
+                                                               <items>
+                                                                  <Button mnemonicParsing="false" onAction="#addHint">
+                                                                     <graphic>
+                                                                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@../icons/lc_insertindexesentry.png" />
+                                                                           </image>
+                                                                        </ImageView>
+                                                                     </graphic>
+                                                                     <tooltip>
+                                                                        <Tooltip text="Neuen Hinweis hinzufügen" />
+                                                                     </tooltip>
+                                                                  </Button>
+                                                                  <Button fx:id="editHintButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#editHint">
+                                                                     <graphic>
+                                                                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@../icons/lc_editdoc.png" />
+                                                                           </image>
+                                                                        </ImageView>
+                                                                     </graphic>
+                                                                     <tooltip>
+                                                                        <Tooltip text="Hinweis bearbeiten" />
+                                                                     </tooltip>
+                                                                  </Button>
+                                                                  <Button fx:id="removeHintButton" layoutX="10.0" layoutY="48.0" mnemonicParsing="false" onAction="#removeHint">
+                                                                     <graphic>
+                                                                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@../icons/lc_delete.png" />
+                                                                           </image>
+                                                                        </ImageView>
+                                                                     </graphic>
+                                                                     <tooltip>
+                                                                        <Tooltip text="Hinweis löschen" />
+                                                                     </tooltip>
+                                                                  </Button>
+                                                               </items>
+                                                            </ToolBar>
+                                                         </right>
+                                                         <center>
+                                                            <ListView fx:id="hintsListView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                                                         </center>
+                                                      </BorderPane>
+                                                   </content>
+                                                </TitledPane>
+                                             </children>
+                                          </VBox>
+                                      </content>
+                                    </Tab>
+                                    <Tab text="Werkzeuge und VR">
+                                      <content>
+                                          <VBox>
+                                             <children>
+                                                <TitledPane prefHeight="200.0" prefWidth="200.0" text="Werkzeuge">
+                                                   <content>
+                                                      <BorderPane>
+                                                         <center>
+                                                            <ListView fx:id="toolListView" prefHeight="100.0" BorderPane.alignment="CENTER" />
+                                                         </center>
+                                                         <right>
+                                                            <ToolBar orientation="VERTICAL" BorderPane.alignment="CENTER">
+                                                              <items>
+                                                                  <Button mnemonicParsing="false" onAction="#addTool">
+                                                                     <graphic>
+                                                                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@../icons/lc_insertindexesentry.png" />
+                                                                           </image>
+                                                                        </ImageView>
+                                                                     </graphic>
+                                                                     <tooltip>
+                                                                        <Tooltip text="Werkzeug hinzufügen" />
+                                                                     </tooltip>
+                                                                  </Button>
+                                                                  <Button fx:id="removeToolButton" mnemonicParsing="false" onAction="#removeTool">
+                                                                     <graphic>
+                                                                        <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@../icons/lc_delete.png" />
+                                                                           </image>
+                                                                        </ImageView>
+                                                                     </graphic>
+                                                                     <tooltip>
+                                                                        <Tooltip text="Werkzeug entfernen" />
+                                                                     </tooltip>
+                                                                  </Button>
+                                                              </items>
+                                                            </ToolBar>
+                                                         </right>
+                                                      </BorderPane>
+                                                   </content>
+                                                </TitledPane>
+                                                <TitledPane fx:id="vrPane" text="VR-Szene">
+                                                   <content>
+                                                      <VBox>
+                                                         <children>
+                                                            <BorderPane>
+                                                               <right>
+                                                                  <ToolBar orientation="VERTICAL" BorderPane.alignment="CENTER">
+                                                                    <items>
+                                                                      <Button mnemonicParsing="false" onAction="#selectVRNode">
+                                                                           <graphic>
+                                                                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                                                 <image>
+                                                                                    <Image url="@../icons/lc_open.png" />
+                                                                                 </image>
+                                                                              </ImageView>
+                                                                           </graphic>
+                                                                           <tooltip>
+                                                                              <Tooltip text="VR-Knoten auswählen" />
+                                                                           </tooltip></Button>
+                                                                        <Button fx:id="removeVRNodeButton" mnemonicParsing="false" onAction="#removeVRNode">
+                                                                           <graphic>
+                                                                              <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                                                                 <image>
+                                                                                    <Image url="@../icons/lc_delete.png" />
+                                                                                 </image>
+                                                                              </ImageView>
+                                                                           </graphic>
+                                                                           <tooltip>
+                                                                              <Tooltip text="VR-Knoten entfernen" />
+                                                                           </tooltip></Button>
+                                                                    </items>
+                                                                  </ToolBar>
+                                                               </right>
+                                                               <center>
+                                                                  <GridPane hgap="10.0" maxHeight="50.0" vgap="5.0" BorderPane.alignment="CENTER">
+                                                                    <columnConstraints>
+                                                                      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="257.0" minWidth="10.0" prefWidth="92.0" />
+                                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="442.0" minWidth="10.0" prefWidth="424.0" />
+                                                                    </columnConstraints>
+                                                                    <rowConstraints>
+                                                                      <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                                                                      <RowConstraints minHeight="20.0" prefHeight="15.0" vgrow="SOMETIMES" />
+                                                                    </rowConstraints>
+                                                                     <children>
+                                                                        <Label text="VR-Knoten:" />
+                                                                        <Label text="VR-Methode:" GridPane.rowIndex="1" />
+                                                                        <Label fx:id="vrNodeLabel" text="-" GridPane.columnIndex="1" />
+                                                                        <Label fx:id="vrMethodLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                     </children>
+                                                                  </GridPane>
+                                                               </center>
+                                                            </BorderPane>
+                                                         </children>
+                                                      </VBox>
+                                                   </content>
+                                                </TitledPane>
+                                             </children>
+                                          </VBox>
+                                      </content>
+                                    </Tab>
+                                </tabs>
+                              </TabPane>
+                           </center>
+                        </BorderPane>
+                     </children>
+                  </StackPane>
+               </center>
+            </BorderPane>
+         </items>
+      </SplitPane>
+   </center>
+</BorderPane>

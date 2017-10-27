@@ -1,0 +1,19 @@
+.tab-pane .tab-header-background {
+    -fx-background-color: #F5F5F5;
+}
+
+.vbox {
+    -fx-background-color: #F5F5F5;
+}
+
+.tool-bar {
+    -fx-background-color: #F5F5F5;
+}
+
+.list-cell:empty {
+    -fx-background-color: #FFFFFF;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: #99ccff;
+}
