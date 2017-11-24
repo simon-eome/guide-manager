@@ -1,8 +1,8 @@
 package de.eome.guide.gm.model;
 
-import de.glassroom.gpe.Node;
-import de.glassroom.gpe.Step;
-import de.glassroom.gpe.content.ContentDescriptor;
+import de.eome.guide.api.Action;
+import de.eome.guide.api.Content;
+import de.eome.guide.api.Step;
 import java.util.Objects;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -11,15 +11,15 @@ import javafx.beans.property.StringProperty;
  *
  * @author simon.schwantzer(at)im-c.de
  */
-public class StepItem implements NodeItem {
-    private final Step step;
-    private final ContentDescriptor content;
+public class ActionItem implements StepItem {
+    private final Action step;
+    private final Content content;
     private final StringProperty labelProperty;
     
-    public StepItem(Step step, ContentDescriptor content) {
+    public ActionItem(Action step, Content content) {
         this.step = step;
         this.content = content;
-        String info = content.getInfo();
+        String info = content.getDescription();
         this.labelProperty = new SimpleStringProperty(info != null ? info : "[n/a]");
     }
     
@@ -29,7 +29,7 @@ public class StepItem implements NodeItem {
     }
     
     @Override
-    public Node getNode() {
+    public Step getNode() {
         return step;
     }
     
@@ -37,7 +37,7 @@ public class StepItem implements NodeItem {
         return step;
     }
     
-    public ContentDescriptor getContent() {
+    public Content getContent() {
         return content;
     }
     
@@ -65,7 +65,7 @@ public class StepItem implements NodeItem {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final StepItem other = (StepItem) obj;
+        final ActionItem other = (ActionItem) obj;
         if (!Objects.equals(this.step, other.step)) {
             return false;
         }

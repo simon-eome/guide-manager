@@ -1,6 +1,6 @@
 package de.eome.guide.gm.model;
 
-import de.glassroom.gpe.content.Warning;
+import de.eome.guide.api.IconizedMessage;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -9,10 +9,10 @@ import javafx.beans.property.StringProperty;
  * @author simon.schwantzer(at)im-c.de
  */
 public class WarningModel {
-    private final Warning warning;
+    private final IconizedMessage warning;
     private final StringProperty textProperty;
     
-    public WarningModel(Warning warning) {
+    public WarningModel(IconizedMessage warning) {
         this.warning = warning;
         textProperty = new SimpleStringProperty(warning.getText()) {
             @Override
@@ -23,7 +23,7 @@ public class WarningModel {
         };
     }
     
-    public Warning getBean() {
+    public IconizedMessage getBean() {
         return warning;
     }
     

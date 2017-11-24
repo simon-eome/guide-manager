@@ -1,7 +1,6 @@
 package de.eome.guide.gm.model;
 
-import de.glassroom.gpe.Guide;
-import de.glassroom.gpe.annotations.MetadataAnnotation;
+import de.eome.guide.api.Guide;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -16,7 +15,7 @@ public class GuideModel {
     private final String lang;
     private final StringProperty titleProperty, descriptionProperty;
     private final StringProperty syncStatusProperty;
-    private final ObjectProperty<MetadataAnnotation> metadataProperty;
+    // private final ObjectProperty<MetadataAnnotation> metadataProperty;
     
     /**
      * Creates a new wrapper for the given guide.

@@ -1,6 +1,6 @@
 package de.eome.guide.gm.model;
 
-import de.glassroom.gpe.content.Hint;
+import de.eome.guide.api.IconizedMessage;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -9,10 +9,10 @@ import javafx.beans.property.StringProperty;
  * @author simon.schwantzer(at)im-c.de
  */
 public class HintModel {
-    private final Hint hint;
+    private final IconizedMessage hint;
     private final StringProperty textProperty;
     
-    public HintModel(Hint hint) {
+    public HintModel(IconizedMessage hint) {
         this.hint = hint;
         textProperty = new SimpleStringProperty(hint.getText()) {
             @Override
@@ -23,7 +23,7 @@ public class HintModel {
         };
     }
     
-    public Hint getBean() {
+    public IconizedMessage getBean() {
         return hint;
     }
     

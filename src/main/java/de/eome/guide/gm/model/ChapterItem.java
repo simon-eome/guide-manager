@@ -1,8 +1,7 @@
 package de.eome.guide.gm.model;
 
-import de.glassroom.gpe.Chapter;
-import de.glassroom.gpe.Guide;
-import de.glassroom.gpe.Node;
+import de.eome.guide.api.Chapter;
+import de.eome.guide.api.Guide;
 import java.util.Objects;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -11,7 +10,7 @@ import javafx.beans.property.StringProperty;
  *
  * @author simon.schwantzer(at)im-c.de
  */
-public class ChapterItem implements NodeItem {
+public class ChapterItem implements StepItem {
     private final Chapter chapter;
     private final Guide target;
     private final StringProperty labelProperty;
@@ -19,6 +18,8 @@ public class ChapterItem implements NodeItem {
     public ChapterItem(Chapter chapter, Guide target) {
         this.chapter = chapter;
         this.target = target;
+        chapter.getContentId("de_DE");
+        chapter.getTarget();
         this.labelProperty = new SimpleStringProperty(target.getMetadata().getTitle("de_DE"));
     }
 

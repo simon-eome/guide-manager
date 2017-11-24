@@ -26,7 +26,7 @@ import de.eome.guide.gm.actions.RemoveWarningAction;
 import de.eome.guide.gm.model.ContentModel;
 import de.eome.guide.gm.model.GuideModel;
 import de.eome.guide.gm.model.HintModel;
-import de.eome.guide.gm.model.StepItem;
+import de.eome.guide.gm.model.ActionItem;
 import de.eome.guide.gm.model.WarningModel;
 import de.glassroom.gpe.Chapter;
 import de.glassroom.gpe.Guide;
@@ -455,7 +455,7 @@ public class MainController implements SceneController {
                     LOGGER.log(Level.WARNING, "Failed to read content package. Skipping step : " + step.getId(), e);
                     continue;
                 }
-                items.add(new StepItem(step, content));
+                items.add(new ActionItem(step, content));
             } else if (node instanceof Chapter) {
                 Chapter chapter = (Chapter) node;
                 Guide target = session.getGuideManager().getBean().getGuide(chapter.getCalledProcessId());
